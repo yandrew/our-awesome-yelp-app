@@ -52,39 +52,39 @@ def search(term)
     limit: 10,
   radius_filter: 1600, #in meters = 1 miles
   sort: 1, # 0:best matched(default), 1: distance, 2: highest rated
-  }
-  @response = Yelp.client.search_by_coordinates(@coordinates, parameters)
+}
+@response = Yelp.client.search_by_coordinates(@coordinates, parameters)
 
 end
 
-puts "*~*~*~*~* WELCOME TO YELPIE *~*~*~*~*"
-sleep(0.5)
-puts "...for broke ass DBC students"
-sleep(1.5)
-
-loop do
-puts "What would you like to do: search, view, or exit?"
-@user_choice = gets.chomp
-case @user_choice.downcase
-when "search"
-  puts "What type of food do you want to devour?"
-  food_type = gets.chomp
-  search(food_type)
-  show_results(@response)
+def start
+  puts "*~*~*~*~* WELCOME TO YELPIE *~*~*~*~*"
+  sleep(0.5)
+  puts "...for broke ass DBC students"
   puts ""
+  loop do
+    puts "What would you like to do: search, view, or exit?"
+    @user_choice = gets.chomp
+    case @user_choice.downcase
+    when "search"
+      puts "\nWhat type of food do you want to devour?"
+      food_type = gets.chomp
+      search(food_type)
+      show_results(@response) if @response.businesses != []
+      puts ""
 
-when "view"
-  show_bookmarks
+    when "view"
+      show_bookmarks
 
-when "exit"
-  abort("Thanks for using our awesome app")
+    when "exit"
+      abort("Thanks for using our awesome app")
 
-else
-  "Sorry you chose a wrong input"
+    end
+  end
 end
-end
 
 
+start
 
 
 
