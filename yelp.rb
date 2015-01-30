@@ -27,12 +27,32 @@ coordinates = { latitude: 37.784900, longitude: -122.397398 }
 
 response = Yelp.client.search_by_coordinates(coordinates, parameters)
 puts "*~*~*~*~**~*~*~*~**~*~*~*~**~*~*~*~**~*~*~*~**~*~*~*~**~*~*~*~*"
-response.businesses.each do |x|
-  ap "                     #{x.name}"
+response.businesses.each_with_index do |x, index|
+  ap "#{index}                     #{x.name}"
+  # ap "#{response.location.display_address}"
   ap "Distance: #{x.distance.floor}"
   ap "Rating: #{x.rating}"
   puts "*~*~*~*~**~*~*~*~**~*~*~*~**~*~*~*~**~*~*~*~**~*~*~*~**~*~*~*~*"
 end
-#puts response.businesses[0].rating
 
-# puts response.businesses[0].display_address
+
+puts "Would you like to bookmark any of these restaurants? (pick index number)"
+
+bookmark_choice = gets.chomp
+
+new_restaurant = Restaurant.create( name: response.businesses[bookmark_choice.to_i].name, distance: response.businesses[bookmark_choice.to_i].distance.floor, rating: response.businesses[bookmark_choice.to_i].rating )
+
+
+p new_restaurant
+
+
+
+      # t.string :name
+      # t.string :address
+      # t.string :address
+      # t.string :phone
+
+      # t.integer :distance
+      # t.integer :rating
+      # t.integer :review_count
+
