@@ -15,18 +15,6 @@ puts "What type of food do you want to devour"
 food_type = gets.chomp
 puts
 
-# YOUR_CONSUMER_KEY = 'QCX_Wf09d5RnoOr6MaGl1w'
-# YOUR_CONSUMER_SECRET = '9iRHa1wyKwO_76knQis0K--13VQ'
-# YOUR_TOKEN = 'clnRjAu8W4Vdd9LY8Hu4bOrdI2IBO2RV'
-# YOUR_TOKEN_SECRET = 'Y0GvcKDj0tpzQfB6JsJrWxPrR68'
-
-
-Yelp.client.configure do |config|
-  config.consumer_key = 'QCX_Wf09d5RnoOr6MaGl1w'
-  config.consumer_secret = '9iRHa1wyKwO_76knQis0K--13VQ'
-  config.token = 'clnRjAu8W4Vdd9LY8Hu4bOrdI2IBO2RV'
-  config.token_secret = 'Y0GvcKDj0tpzQfB6JsJrWxPrR68'
-end
 
 
 parameters = { term: food_type,
@@ -35,7 +23,7 @@ parameters = { term: food_type,
   sort: 1, # 0:best matched(default), 1: distance, 2: highest rated
 }
 
-coordinates = { latitude: 37.784900, longitude: -122.397398}
+coordinates = { latitude: 37.784900, longitude: -122.397398 }
 
 response = Yelp.client.search_by_coordinates(coordinates, parameters)
 puts "*~*~*~*~**~*~*~*~**~*~*~*~**~*~*~*~**~*~*~*~**~*~*~*~**~*~*~*~*"
