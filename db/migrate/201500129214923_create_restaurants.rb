@@ -1,10 +1,15 @@
-class CreateTasks < ActiveRecord::Migration
+class CreateRestaurants < ActiveRecord::Migration
   def change
-    create_table :tasks do |t|
+    create_table :restaurants do |t|
       t.string :name
-      t.boolean :completed, :default => false
-      t.integer :list_id, :default => 1
-
+      t.string :address
+      t.string :address
+      t.string :phone
+      
+      t.integer :distance
+      t.integer :rating
+      t.integer :review_count
+      
       t.timestamps
     end
   end
