@@ -17,21 +17,24 @@ def restaurant_display(restaurant, index)
   puts "Rating: #{restaurant.rating}"
 end
 
-def show_results
+def show_results(result)
   puts "*~*~*~*~**~*~*~*~**~*~*~*~**~*~*~*~**~*~*~*~**~*~*~*~**~*~*~*~*"
-  response.businesses.each_with_index do |x, index|
+  result.businesses.each_with_index do |x, index|
     ap "#{index}                     #{x.name}"
     # ap "#{response.location.display_address}"
     ap "Distance: #{x.distance.floor}"
     ap "Rating: #{x.rating}"
     puts "*~*~*~*~**~*~*~*~**~*~*~*~**~*~*~*~**~*~*~*~**~*~*~*~**~*~*~*~*"
+
   end
+  bookmark(result)
 end
 
 def bookmark(response)
   puts "Would you like to bookmark any of these restaurants? (yes or no)"
   first_choice = gets.chomp.downcase
   if first_choice == "yes"
+    puts "What number do you want to bookmark?"
     bookmark_choice = gets.chomp
     restaurant_obj = response.businesses[bookmark_choice.to_i]
     new_restaurant = Restaurant.create( name: restaurant_obj.name, distance: restaurant_obj.distance.floor, rating: restaurant_obj.rating )
@@ -49,29 +52,37 @@ def search(term)
     limit: 10,
   radius_filter: 1600, #in meters = 1 miles
   sort: 1, # 0:best matched(default), 1: distance, 2: highest rated
-}
-  response = Yelp.client.search_by_coordinates(@coordinates, parameters)
-  bookmark(response)
+  }
+  @response = Yelp.client.search_by_coordinates(@coordinates, parameters)
+
 end
 
 puts "*~*~*~*~* WELCOME TO YELPIE *~*~*~*~*"
 sleep(0.5)
 puts "...for broke ass DBC students"
 sleep(1.5)
-puts "What would you like to do: search or view bookmarks"
+
+loop do
+puts "What would you like to do: search, view, or exit?"
 @user_choice = gets.chomp
-case @user_choice
+case @user_choice.downcase
 when "search"
   puts "What type of food do you want to devour?"
   food_type = gets.chomp
   search(food_type)
-  show_results
+  show_results(@response)
   puts ""
 
 when "view"
   show_bookmarks
-end
 
+when "exit"
+  abort("Thanks for using our awesome app")
+
+else
+  "Sorry you chose a wrong input"
+end
+end
 
 
 
