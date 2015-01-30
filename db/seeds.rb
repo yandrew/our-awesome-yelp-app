@@ -1,4 +1,4 @@
-Task.create([
+Restaurant.create([
   {name: "drink water"},
   {name: "read POODR"},
   {name: "go to lecture at 1400 hrs"},
@@ -7,5 +7,3 @@ Task.create([
   {name: "create TODO v1.0"},
   {name: "play ping pong"}
   ])
-
-List.create({name: "DBC TODO"})
