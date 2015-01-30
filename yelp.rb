@@ -28,7 +28,7 @@ coordinates = { latitude: 37.784900, longitude: -122.397398 }
 response = Yelp.client.search_by_coordinates(coordinates, parameters)
 puts "*~*~*~*~**~*~*~*~**~*~*~*~**~*~*~*~**~*~*~*~**~*~*~*~**~*~*~*~*"
 response.businesses.each do |x|
-  ap "                     #{x.name}"
+  puts "                     #{x.name} "
   ap "Distance: #{x.distance.floor}"
   ap "Rating: #{x.rating}"
   puts "*~*~*~*~**~*~*~*~**~*~*~*~**~*~*~*~**~*~*~*~**~*~*~*~**~*~*~*~*"
