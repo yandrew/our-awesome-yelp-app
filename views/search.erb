@@ -1,0 +1,19 @@
+
+<section id="add">
+  <form action="/" method="post">
+    <!-- <textarea name="location" placeholder="Location&hellip;"></textarea> -->
+    <textarea name="type" placeholder="Type&hellip;"></textarea>
+    <input type="submit" value="Search">
+  </form>
+</section>
+
+ <% @search.each_with_index do |x, index|%>
+
+   <%=(index+1)%>. <%= x.name %>
+  <ul>
+    <li><%= x.location.display_address[0] %></li>
+    <li>Distance from DBC: <%= x.distance.floor  %> meters</li>
+    <li>Rating: <%= x.rating.floor  %></li>
+  </ul>
+</ol>
+    <% end %>

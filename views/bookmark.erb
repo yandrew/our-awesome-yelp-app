@@ -16,4 +16,8 @@
   </form>
 </section>
 
-<% # display notes %>
+ <% Restaurant.all.each do |x|%>
+<ol>
+    <li><%= x.name %></li>
+</ol>
+    <% end %>
