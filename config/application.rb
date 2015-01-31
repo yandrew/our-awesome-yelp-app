@@ -5,7 +5,7 @@ require 'logger'
 require 'hirb'
 require 'yelp'
 require 'awesome_print'
-
+require 'colored'
 Hirb.enable({ width: 250})
 APP_ROOT = Pathname.new(File.expand_path(File.join(File.dirname(__FILE__), '..')))
 

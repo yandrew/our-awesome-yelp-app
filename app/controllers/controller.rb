@@ -1,27 +1,83 @@
 require_relative '../../config/application'
 
 
-module Controller
-  def self.argv_to_s(argv)
-    argv.join(' ').strip
+def show_bookmarks
+  Restaurant.all.each_with_index do |restaurant, index|
+    restaurant_display(restaurant, index)
   end
-  def self.options(arg, *task_data)
-    case arg
-    when "add"
-      Task.create(name: (self.argv_to_s(task_data))) unless self.argv_to_s(task_data) == ""
-    when "delete"
-      index_to_delete = task_data[0][0].to_i - 1
-      Task.all[index_to_delete].delete
-    when "list"
-      Task.all.each_with_index do |task, index|
-        puts "#{ index + 1 }: #{task.name}"
-      end
-    when "complete"
-     p index_to_complete = task_data[0][0].to_i - 1
-     Task.all[index_to_complete].update_attribute(:completed, true)
-        #puts so you can see complete next to list. #{index + 1}: #{task.name} - complete
-      end
-    end
+end
 
+def restaurant_display(restaurant, index)
+  puts "\n::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
+  puts "#{ index + 1 }: #{restaurant.name}".white_on_blue
+  ap "Distance: #{restaurant.distance} meters"
+  ap "Rating: #{restaurant.rating}"
+end
+
+def show_results(result)
+  puts "\n::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
+  result.businesses.each_with_index do |x, index|
+    ap "#{index}                     #{x.name}"
+    # ap "#{response.location.display_address}"
+    ap "Distance: #{x.distance.floor}"
+    ap "Rating: #{x.rating}"
+    puts "\n::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"
   end
+  bookmark(result)
+end
+
+def bookmark(response)
+  puts "Would you like to bookmark any of these restaurants? (yes or no)".cyan
+  first_choice = gets.chomp.downcase
+  if first_choice == "yes"
+    puts "What number do you want to bookmark?".cyan
+    bookmark_choice = gets.chomp
+    restaurant_obj = response.businesses[bookmark_choice.to_i]
+    new_restaurant = Restaurant.create( name: restaurant_obj.name, distance: restaurant_obj.distance.floor, rating: restaurant_obj.rating )
+    puts "#{new_restaurant.name} has been bookmarked.".cyan
+  else
+    return "Thanks for using Yelpie".cyan
+  end
+
+end
+
+@coordinates = { latitude: 37.784900, longitude: -122.397398 }
+
+def search(term)
+  parameters = { term: term,
+    limit: 10,
+  radius_filter: 1600, #in meters = 1 miles
+  sort: 1, # 0:best matched(default), 1: distance, 2: highest rated
+}
+@response = Yelp.client.search_by_coordinates(@coordinates, parameters)
+
+end
+
+def start
+  puts "                                     ".white_on_cyan
+  puts "*~*~*~*~* WELCOME TO YELPIE *~*~*~*~*".white_on_cyan.bold
+  puts "                                     ".white_on_cyan
+  sleep(0.5)
+  puts "    lazy and hungry DBC students    ".bold.cyan
+  puts ""
+  loop do
+    puts "What would you like to do: ".cyan + "search".underline.red + ", " + "view".underline.red + " bookmarks" + ", or " + "exit".underline.red + "?".cyan
+    @user_choice = gets.chomp
+    case @user_choice.downcase
+    when "search"
+      puts "\nWhat type of food do you want to devour?".cyan
+      food_type = gets.chomp
+      search(food_type)
+      show_results(@response) if @response.businesses != []
+      puts ""
+
+    when "view"
+      show_bookmarks
+
+    when "exit"
+      abort("Thanks for using our awesome app.".red)
+
+    end
+  end
+end
 
